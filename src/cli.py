@@ -1,109 +1,194 @@
-"""Fire-facing CLI: index, search, search_dataset, answer, answer_dataset, evaluate (Task 4/7)."""
-from src.io_utils import load_corpus
-from tqdm import tqdm
+"""Command-Line Interface built with Python Fire (Task 4/7)."""
+
 import json
 from pathlib import Path
-from src.retrieval.bm25_retriever import BM25Retriever
+from typing import Any, Dict, List, Optional
+
+from tqdm import tqdm
+
 from src.generation.generator import QwenGenerator
+from src.indexing.indexer import build_index
+from src.io_utils import RAW_DIR
 from src.models import (
     MinimalAnswer,
     MinimalSearchResults,
     StudentSearchResults,
     StudentSearchResultsAndAnswer,
 )
+from src.retrieval.bm25_retriever import BM25Retriever
+
 
 class RagCLI:
-    def index(self, corpus_dir: str, chunk_size: int = 2000) -> None:
-        
-        from src.indexing.indexer import build_index 
-        build_index(corpus_dir,chunk_size)
+    """CLI commands exposing indexing, search, generation, and evaluation."""
 
-    
-    def search(self, query: str, k: int = 5) -> None:
-        from src.retrieval.bm25_retriever import BM25Retriever
-        
-        print(f"Loading index and searching for: '{query}'...")
-        retriever = BM25Retriever()
-        results = retriever.retrieve(query, k)
-        print(f"\nTop {k} results:")
-        for rank, res in enumerate(results, 1):
-            print(f"#{rank} - {res.file_path} (Chars: {res.first_character_index} to {res.last_character_index})")
+    def index(
+        self,
+        corpus_dir: str = str(RAW_DIR),
+        max_chunk_size: int = 2000,
+        chunk_size: Optional[int] = None,
+    ) -> None:
+        """Ingest data/raw/ and build the index under data/processed/."""
+        corpus_path = Path(corpus_dir)
+        if not corpus_path.exists():
+            print(f"Error: Corpus directory not found at {corpus_dir}")
+            return
+        effective_chunk_size = chunk_size if chunk_size is not None else max_chunk_size
+        if effective_chunk_size <= 0:
+            print("Error: max_chunk_size must be positive.")
+            return
 
-    def search_dataset(self, dataset_path: str, save_directory: str, k: int = 5) -> None:
-        import json
-        from pathlib import Path
-        from src.retrieval.bm25_retriever import BM25Retriever
-        from src.models import StudentSearchResults, MinimalSearchResults
-
-        with open(dataset_path, "r") as f:
-            dataset = json.load(f)
-        retriever = BM25Retriever()
-        all_results = []
-
-        for q in tqdm(dataset["rag_questions"], desc="Searching questions", unit=" query"):
-            top_chunks = retriever.retrieve(q["question"], k)
-            
-            single_result = MinimalSearchResults(
-                question_id=q["question_id"],
-                question=q["question"],
-                retrieved_sources=top_chunks
-            )
-
-            all_results.append(single_result)
-
-        final_output = StudentSearchResults(
-            search_results=all_results,
-            k=k
+        build_index(
+            corpus_dir=corpus_dir,
+            max_chunk_size=effective_chunk_size,
         )
 
-        Path(save_directory).mkdir(parents=True, exist_ok=True)
+    def search(self, query: str = "", k: int = 5) -> None:
+        """Return the top-k sources for a single query."""
+        if not query or not query.strip():
+            print("Empty query provided. Returning 0 results.")
+            return
+        if k <= 0:
+            print(f"Top {k} results: None (k must be positive).")
+            return
 
-        input_filename = Path(dataset_path).name
-        output_path = Path(save_directory) / input_filename
+        try:
+            retriever = BM25Retriever()
+        except Exception as e:
+            print(f"Error loading index: {e}. Please run index first.")
+            return
 
-        with open(output_path, "w") as f:
-            f.write(final_output.model_dump_json(indent=4))
-        
-        print(f"Saved {len(all_results)} search results to {output_path}")
-    def answer(self, query: str, k: int = 5) -> None:
+        results = retriever.retrieve(query, k=k)
+        print(f"Top {len(results)} results for: {query}:")
+        for rank, res in enumerate(results, 1):
+            print(
+                f"#{rank} - {res.file_path} "
+                f"[{res.first_character_index}:{res.last_character_index}]"
+            )
+
+    def search_dataset(
+        self, dataset_path: str, save_directory: str, k: int = 5
+    ) -> None:
+        """Run search over a dataset and write a StudentSearchResults JSON file."""
+        if k <= 0:
+            print("Error: k must be a positive integer.")
+            return
+
+        p = Path(dataset_path)
+        if not p.is_file():
+            print(f"Error: Dataset file not found at {dataset_path}")
+            return
+
+        try:
+            with open(p, "r", encoding="utf-8") as f:
+                dataset: Dict[str, Any] = json.load(f)
+        except json.JSONDecodeError:
+            print(f"Error: Malformed JSON in {dataset_path}")
+            return
+        except Exception as e:
+            print(f"Error reading {dataset_path}: {e}")
+            return
+
+        questions = dataset.get("rag_questions")
+        if not isinstance(questions, list):
+            print(f"Error: Missing or invalid rag_questions in {dataset_path}")
+            return
+
+        try:
+            retriever = BM25Retriever()
+        except Exception as e:
+            print(f"Error loading index: {e}. Please run index first.")
+            return
+
+        all_results: List[MinimalSearchResults] = []
+        for q in tqdm(questions, desc="Searching questions", unit="query"):
+            q_text = q.get("question", "") if isinstance(q, dict) else ""
+            q_id = q.get("question_id", "") if isinstance(q, dict) else ""
+            top_chunks = retriever.retrieve(q_text, k=k)
+            all_results.append(
+                MinimalSearchResults(
+                    question_id=q_id,
+                    question=q_text,
+                    retrieved_sources=top_chunks,
+                )
+            )
+
+        final_output = StudentSearchResults(search_results=all_results, k=k)
+        out_dir = Path(save_directory)
+        out_dir.mkdir(parents=True, exist_ok=True)
+        out_file = out_dir / p.name
+
+        with open(out_file, "w", encoding="utf-8") as f:
+            f.write(final_output.model_dump_json(indent=2))
+
+        print(f"Saved {len(all_results)} search results to {out_file}")
+
+    def answer(self, query: str = "", k: int = 5) -> None:
         """Answer a single query using retrieved context."""
-        retriever = BM25Retriever()
+        if not query or not query.strip():
+            print("Empty query provided.")
+            return
+        if k <= 0:
+            print("Error: k must be a positive integer.")
+            return
+
+        try:
+            retriever = BM25Retriever()
+        except Exception as e:
+            print(f"Error loading index: {e}. Please run index first.")
+            return
+
         top_chunks = retriever.retrieve(query, k=k)
-        generator = QwenGenerator()
-        ans = generator.generate_answer(query, top_chunks)
+        try:
+            generator = QwenGenerator()
+            ans = generator.generate_answer(query, top_chunks)
+        except Exception as e:
+            print(f"Error generating answer: {e}")
+            return
 
         print("\n================ ANSWER ================")
         print(ans)
         print("========================================\n")
 
-
     def answer_dataset(
         self, student_search_results_path: str, save_directory: str
     ) -> None:
-        """Generate answers for a dataset, producing a StudentSearchResultsAndAnswer JSON file."""
-        input_path = Path(student_search_results_path)
-        with open(input_path, "r", encoding="utf-8") as f:
-            data = json.load(f)
+        """Generate answers for a dataset, producing StudentSearchResultsAndAnswer."""
+        p = Path(student_search_results_path)
+        if not p.is_file():
+            print(f"Error: File not found at {student_search_results_path}")
+            return
+
+        try:
+            with open(p, "r", encoding="utf-8") as f:
+                data: Dict[str, Any] = json.load(f)
+        except json.JSONDecodeError:
+            print(f"Error: Malformed JSON in {student_search_results_path}")
+            return
+        except Exception as e:
+            print(f"Error reading {student_search_results_path}: {e}")
+            return
 
         search_results = data.get("search_results", [])
-        k = data.get("k", 3)
+        if not isinstance(search_results, list):
+            print("Error: search_results must be a list.")
+            return
 
+        k = int(data.get("k", 5))
         print(f"Loaded {len(search_results)} questions ...")
 
-        generator = QwenGenerator()
-        answered_results = []
+        try:
+            generator = QwenGenerator()
+        except Exception as e:
+            print(f"Error initializing model generator: {e}")
+            return
 
+        answered: List[MinimalAnswer] = []
         for item in tqdm(search_results, desc="Generating answers", unit="question"):
-            # Reconstruct MinimalSearchResults object
             search_item = MinimalSearchResults(**item)
-            
-            # Generate the answer using the retrieved sources
             ans_text = generator.generate_answer(
                 search_item.question, search_item.retrieved_sources
             )
-
-            # Create MinimalAnswer
-            answered_results.append(
+            answered.append(
                 MinimalAnswer(
                     question_id=search_item.question_id,
                     question=search_item.question,
@@ -112,19 +197,61 @@ class RagCLI:
                 )
             )
 
-        output_data = StudentSearchResultsAndAnswer(
-            search_results=answered_results, k=k
-        )
-
+        output_data = StudentSearchResultsAndAnswer(search_results=answered, k=k)
         out_dir = Path(save_directory)
         out_dir.mkdir(parents=True, exist_ok=True)
-        out_file = out_dir / input_path.name
+        out_file = out_dir / p.name
 
         with open(out_file, "w", encoding="utf-8") as f:
             f.write(output_data.model_dump_json(indent=2))
 
         print(f"Saved student_search_results_and_answer to {out_file}")
 
+    def evaluate(
+        self,
+        student_search_results_path: str,
+        dataset_path: str = "",
+        ground_truth_path: str = "",
+    ) -> None:
+        """Report recall@k against a ground-truth dataset."""
+        target_gt = dataset_path if dataset_path else ground_truth_path
+        if not target_gt:
+            print("Error: Please provide --dataset_path <path>")
+            return
 
-    def evaluate(self, dataset_path: str, search_results_path: str) -> None:
-        print(dataset_path, search_results_path)
+        p_stud = Path(student_search_results_path)
+        p_gt = Path(target_gt)
+
+        if not p_stud.is_file():
+            print(f"Error: Student search results file not found at {p_stud}")
+            return
+        if not p_gt.is_file():
+            print(f"Error: Ground truth dataset file not found at {p_gt}")
+            return
+
+        try:
+            with open(p_stud, "r", encoding="utf-8") as f:
+                student_data: Dict[str, Any] = json.load(f)
+            with open(p_gt, "r", encoding="utf-8") as f:
+                gt_data: Dict[str, Any] = json.load(f)
+        except json.JSONDecodeError as e:
+            print(f"Error: Malformed JSON file: {e}")
+            return
+        except Exception as e:
+            print(f"Error reading JSON files: {e}")
+            return
+
+        student_results = student_data.get("search_results", [])
+        gt_questions = gt_data.get("rag_questions", [])
+        k = int(student_data.get("k", 5))
+
+        from src.evaluation.metrics import compute_recall_at_k
+        recall = compute_recall_at_k(student_results, gt_questions)
+
+        total_cnt = len(student_results)
+        hit_cnt = int(round(recall * total_cnt))
+
+        print("\n========================================")
+        print(f"  Recall@{k}: {recall:.2%}")
+        print(f"  ({hit_cnt}/{total_cnt} questions hit)")
+        print("========================================\n")

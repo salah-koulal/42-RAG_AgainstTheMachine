@@ -47,3 +47,4 @@ models/
 *.bin
 *.safetensors
 *.gguf
+moulinette

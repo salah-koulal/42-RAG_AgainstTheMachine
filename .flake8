@@ -1,3 +1,11 @@
 [flake8]
 max-line-length = 100
-exclude = .venv,.git,__pycache__,build,dist,data
+exclude =
+    .venv,
+    .git,
+    __pycache__,
+    build,
+    dist,
+    data,
+    ./data,
+    cache

@@ -1,38 +1,31 @@
-"""Shared helpers for reading/writing JSON safely: context managers, error handling (Task 2+)."""
+"""Shared helpers for reading and writing files safely."""
 
 from pathlib import Path
 from typing import List, Tuple
 
+RAW_DIR = Path("data/raw")
+PROCESSED_DIR = Path("data/processed")
+DATASETS_DIR = Path("data/datasets")
+OUTPUT_DIR = Path("data/output")
 
-RAW_DIR = Path("data/raw")                          # where the raw corpus lives
-PROCESSED_DIR = Path("data/processed")              # where the index gets saved
-DATASETS_DIR = Path("data/datasets")                # where question JSONs live
-OUTPUT_DIR = Path("data/output")                    # where results get written
-
-SUPPORTED_EXTENSIONS = {".py", ".md", ".txt"}              # only chunk these file types
+SUPPORTED_EXTENSIONS = {".py", ".md", ".txt"}
 
 
 def load_corpus(corpus_dir: str = str(RAW_DIR)) -> List[Tuple[str, str]]:
-    """
-    Recursively read all .py and .md files from *corpus_dir*.
+    """Recursively read all supported files from corpus_dir.
 
     Returns a list of (relative_path, file_content) tuples.
     """
-    
-    results = []
+    results: List[Tuple[str, str]] = []
     files = Path(corpus_dir)
-    for item in files.rglob("*"):
-        if item.is_file():
-            if not (item.suffix in SUPPORTED_EXTENSIONS):
-                continue
+    if not files.exists():
+        return results
+
+    for item in sorted(files.rglob("*")):
+        if item.is_file() and item.suffix in SUPPORTED_EXTENSIONS:
             try:
-                content = item.read_text(encoding="utf-8")
-                results.append((str(item.relative_to(files)) , content))
-
-
-            except UnicodeDecodeError:
+                content = item.read_text(encoding="utf-8", errors="ignore")
+                results.append((str(item.relative_to(files)), content))
+            except Exception:
                 pass
-
-
-
     return results
