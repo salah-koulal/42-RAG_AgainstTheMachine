@@ -7,18 +7,12 @@ from src.io_utils import load_corpus
 def chunk_text(file_path: str, content: str, max_chunk_size: int = 2000) -> List[MinimalSource]:
     results = []
     
-    # Initialize the Langchain splitter
-    # add_start_index=True is CRITICAL here, otherwise you won't know where the chunk started!
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=max_chunk_size,
         chunk_overlap=0,
         add_start_index=True 
     )
-    
-    # Langchain creates "Document" objects
     docs = splitter.create_documents([content])
-    
-    # We must convert Langchain's Documents into your MinimalSource Pydantic models
     for doc in docs:
         start_idx = doc.metadata["start_index"]
         end_idx = start_idx + len(doc.page_content)
@@ -30,7 +24,7 @@ def chunk_text(file_path: str, content: str, max_chunk_size: int = 2000) -> List
                 last_character_index=end_idx
             )
         )
-        
+
     return results
 
 
@@ -101,13 +95,10 @@ def chunk_text(file_path: str, content: str, max_chunk_size: int = 2000) -> List
 #     return results
 
 
-if __name__ == "__main__":
-    content = load_corpus()
-    files = load_corpus("data/raw")
-    print(f"Found {len(files)} files")
-    for path, content in files[2:3]:
-        chunks = chunk_text(path, content)
-
+# if __name__ == "__main__":
+#     files = load_corpus()
+#     print(f"len of this file is :{len(files[8][1])} ")
+#     chunks = chunk_text(files[8][0], files[8][1])
     
-    for c in chunks:
-        print(f"path:{c.file_path} [{c.first_character_index}:{c.last_character_index}] - Size: {c.last_character_index - c.first_character_index}")
+#     for c in chunks:
+#         print(f"path:{c.file_path} [{c.first_character_index}:{c.last_character_index}] - Size: {c.last_character_index - c.first_character_index}")

@@ -9,7 +9,7 @@ PROCESSED_DIR = Path("data/processed")              # where the index gets saved
 DATASETS_DIR = Path("data/datasets")                # where question JSONs live
 OUTPUT_DIR = Path("data/output")                    # where results get written
 
-SUPPORTED_EXTENSIONS = {".py", ".md"}              # only chunk these file types
+SUPPORTED_EXTENSIONS = {".py", ".md", ".txt"}              # only chunk these file types
 
 
 def load_corpus(corpus_dir: str = str(RAW_DIR)) -> List[Tuple[str, str]]:
@@ -20,14 +20,14 @@ def load_corpus(corpus_dir: str = str(RAW_DIR)) -> List[Tuple[str, str]]:
     """
     
     results = []
-    corpus_dir = Path(corpus_dir)
-    for item in corpus_dir.rglob("*"):
+    files = Path(corpus_dir)
+    for item in files.rglob("*"):
         if item.is_file():
             if not (item.suffix in SUPPORTED_EXTENSIONS):
                 continue
             try:
                 content = item.read_text(encoding="utf-8")
-                results.append((str(item.relative_to(corpus_dir)) , content))
+                results.append((str(item.relative_to(files)) , content))
 
 
             except UnicodeDecodeError:
