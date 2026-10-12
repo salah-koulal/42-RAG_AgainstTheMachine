@@ -1,4 +1,4 @@
-"""Recall@k calculation used by the evaluate CLI command (Task 6)."""
+"""Recall@k calculation used by the evaluate CLI command ."""
 
 from typing import Any, Dict, List
 

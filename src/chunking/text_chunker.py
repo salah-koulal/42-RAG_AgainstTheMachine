@@ -1,4 +1,4 @@
-"""Splits Markdown and text files into indexable chunks (Task 1)."""
+"""Splits Markdown and text files into indexable chunks."""
 
 from typing import List
 

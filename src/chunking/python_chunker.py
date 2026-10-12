@@ -1,4 +1,4 @@
-"""Splits Python source files into indexable chunks (Task 1)."""
+"""Splits Python source files into indexable chunks ."""
 
 from typing import List
 
