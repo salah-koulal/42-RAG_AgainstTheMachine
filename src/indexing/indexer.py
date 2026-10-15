@@ -40,7 +40,6 @@ def build_index(
         for c in chunks:
             all_chunks.append(c)
             raw_chunk = content[c.first_character_index:c.last_character_index]
-            # Prepend file path to chunk text for enhanced lexical recall
             indexed_text = f"{c.file_path} {raw_chunk}"
             corpus_texts.append(indexed_text)
 

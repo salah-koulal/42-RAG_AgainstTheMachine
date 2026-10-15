@@ -116,7 +116,6 @@ class RagCLI:
         out_dir = Path(save_directory)
         out_dir.mkdir(parents=True, exist_ok=True)
         out_file = out_dir / p.name
-
         with open(out_file, "w", encoding="utf-8") as f:
             f.write(final_output.model_dump_json(indent=2))
 
@@ -212,6 +211,7 @@ class RagCLI:
         student_search_results_path: str,
         dataset_path: str = "",
         ground_truth_path: str = "",
+        k: Optional[int] = None,
     ) -> None:
         """Report recall@k against a ground-truth dataset."""
         target_gt = dataset_path if dataset_path else ground_truth_path
@@ -243,15 +243,33 @@ class RagCLI:
 
         student_results = student_data.get("search_results", [])
         gt_questions = gt_data.get("rag_questions", [])
-        k = int(student_data.get("k", 5))
 
         from src.evaluation.metrics import compute_recall_at_k
-        recall = compute_recall_at_k(student_results, gt_questions)
 
         total_cnt = len(student_results)
-        hit_cnt = int(round(recall * total_cnt))
+        if total_cnt == 0:
+            print("Warning: No search results found to evaluate.")
+            return
 
         print("\n========================================")
-        print(f"  Recall@{k}: {recall:.2%}")
-        print(f"  ({hit_cnt}/{total_cnt} questions hit)")
+        if k is not None:
+            res = compute_recall_at_k(student_results, gt_questions, k=k)
+            print(f"  Recall@{k}: {res.recall:.2%}")
+            print(f"  ({res.hits}/{res.total} questions hit)")
+        else:
+            file_k = int(student_data.get("k", 5))
+            cutoffs = [c for c in [1, 3, 5, 10] if c <= file_k]
+            if file_k not in cutoffs:
+                cutoffs.append(file_k)
+
+            cutoffs = sorted(set(cutoffs))
+
+            print("  Evaluation Results:")
+            for cutoff in cutoffs:
+                res = compute_recall_at_k(student_results, gt_questions, k=cutoff)
+                tag = " (Subject Requirement)" if cutoff == 5 else ""
+                print(
+                    f"  Recall@{cutoff:02d}: {res.recall:6.2%} "
+                    f"({res.hits}/{res.total} questions hit){tag}"
+                )
         print("========================================\n")
