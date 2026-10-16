@@ -1,6 +1,5 @@
 """Command-Line Interface built with Python Fire (Task 4/7)."""
 
-from concurrent.futures import __dir__
 import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -207,7 +206,6 @@ class RagCLI:
 
         print(f"Saved student_search_results_and_answer to {out_file}")
 
-
     def evaluate(
         self,
         student_search_results_path: str,
@@ -256,9 +254,8 @@ class RagCLI:
         print("\n========================================")
         if k is not None:
             recall = compute_recall_at_k(student_results, gt_questions, k=k)
-            hit_cnt = int(round(recall * total_cnt))
             print(f"  Recall@{k}: {recall:.2%}")
-            print(f"  ({hit_cnt}/{total_cnt} questions hit)")
+            print(f"  ({recall.hits}/{recall.total} questions hit)")
         else:
             file_k = int(student_data.get("k", 5))
             cutoffs = [c for c in [1, 3, 5, 10] if c <= file_k]
@@ -270,5 +267,8 @@ class RagCLI:
             for cutoff in cutoffs:
                 rec = compute_recall_at_k(student_results, gt_questions, k=cutoff)
                 tag = " (Subject Requirement)" if cutoff == 5 else ""
-                print(f"  Recall@{cutoff:02d}: {rec:6.2%}{tag}")
+                print(
+                    f"  Recall@{cutoff:02d}: {rec:6.2%} "
+                    f"({rec.hits}/{rec.total} questions hit){tag}"
+                )
         print("========================================\n")
