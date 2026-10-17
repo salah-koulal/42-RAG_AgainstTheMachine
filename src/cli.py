@@ -10,12 +10,14 @@ from src.generation.generator import QwenGenerator
 from src.indexing.indexer import build_index
 from src.io_utils import RAW_DIR
 from src.models import (
+    MinimalSource,
     MinimalAnswer,
     MinimalSearchResults,
     StudentSearchResults,
     StudentSearchResultsAndAnswer,
 )
 from src.retrieval.bm25_retriever import BM25Retriever
+from src.caching.query_cache import get_cached, set_cached
 
 
 class RagCLI:
@@ -50,14 +52,19 @@ class RagCLI:
         if k <= 0:
             print(f"Top {k} results: None (k must be positive).")
             return
+        cached = get_cached("search", query, k)
+        if cached:
+            print("[Cache HIT ⚡]")
+            results = [MinimalSource(**s) for s in cached]
+        else:
+            try:
+                retriever = BM25Retriever()
+                results = retriever.retrieve(query, k=k)
+                set_cached("search", query, k, [r.model_dump() for r in results])
+            except Exception as e:
+                print(f"Error loading index: {e}. Please run index first.")
+                return
 
-        try:
-            retriever = BM25Retriever()
-        except Exception as e:
-            print(f"Error loading index: {e}. Please run index first.")
-            return
-
-        results = retriever.retrieve(query, k=k)
         print(f"Top {len(results)} results for: {query}:")
         for rank, res in enumerate(results, 1):
             print(
@@ -130,19 +137,25 @@ class RagCLI:
             print("Error: k must be a positive integer.")
             return
 
-        try:
-            retriever = BM25Retriever()
-        except Exception as e:
-            print(f"Error loading index: {e}. Please run index first.")
-            return
+        cached_ans = get_cached("answer", query, k)
+        if cached_ans:
+            print("[Cache HIT ⚡]")
+            ans = cached_ans
+        else:
+            try:
+                retriever = BM25Retriever()
+            except Exception as e:
+                print(f"Error loading index: {e}. Please run index first.")
+                return
 
-        top_chunks = retriever.retrieve(query, k=k)
-        try:
-            generator = QwenGenerator()
-            ans = generator.generate_answer(query, top_chunks)
-        except Exception as e:
-            print(f"Error generating answer: {e}")
-            return
+            top_chunks = retriever.retrieve(query, k=k)
+            try:
+                generator = QwenGenerator()
+                ans = generator.generate_answer(query, top_chunks)
+                set_cached("answer", query, k, ans)
+            except Exception as e:
+                print(f"Error generating answer: {e}")
+                return
 
         print("\n================ ANSWER ================")
         print(ans)
@@ -205,6 +218,12 @@ class RagCLI:
             f.write(output_data.model_dump_json(indent=2))
 
         print(f"Saved student_search_results_and_answer to {out_file}")
+
+    def clear_cache(self) -> None:
+        """Clear the disk-based query cache."""
+        from src.caching.query_cache import clear_cache
+        clear_cache()
+        print("Query cache cleared successfully.")
 
     def evaluate(
         self,
