@@ -1,0 +1,11 @@
+
+================ ANSWER ================
+To use vLLM with LangChain, you need to install the following Python packages:
+
+- `langchain`
+- `langchain_community`
+- `langchain_milvus`
+- `langchain_openai`
+- `langchain_text_splitters`
+========================================
+

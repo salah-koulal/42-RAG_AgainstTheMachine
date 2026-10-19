@@ -1,0 +1,2 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights:   0%|          | 1/311 [00:00<01:36,  3.22it/s]Loading weights:  38%|███▊      | 119/311 [00:00<00:00, 373.65it/s]Loading weights:  61%|██████    | 189/311 [00:00<00:00, 445.13it/s]Loading weights:  82%|████████▏ | 254/311 [00:00<00:00, 467.67it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 394.78it/s]

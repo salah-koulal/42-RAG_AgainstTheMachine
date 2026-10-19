@@ -1,0 +1,75 @@
+{
+  "search:how to configure the openai server:3": [
+    {
+      "file_path": "data/raw/vllm-0.10.1/docs/deployment/frameworks/dstack.md",
+      "first_character_index": 1940,
+      "last_character_index": 3169
+    },
+    {
+      "file_path": "data/raw/vllm-0.10.1/examples/online_serving/openai_chat_completion_client_with_tools_required.py",
+      "first_character_index": 0,
+      "last_character_index": 565
+    },
+    {
+      "file_path": "data/raw/vllm-0.10.1/examples/online_serving/openai_transcription_client.py",
+      "first_character_index": 0,
+      "last_character_index": 710
+    }
+  ],
+  "search:asdfghjkl zxcvbnm qwertyuiop:10": [
+    {
+      "file_path": "data/raw/vllm-0.10.1/vllm/worker/worker_base.py",
+      "first_character_index": 25167,
+      "last_character_index": 25995
+    },
+    {
+      "file_path": "data/raw/vllm-0.10.1/vllm/worker/worker_base.py",
+      "first_character_index": 23702,
+      "last_character_index": 25164
+    },
+    {
+      "file_path": "data/raw/vllm-0.10.1/vllm/worker/worker_base.py",
+      "first_character_index": 23424,
+      "last_character_index": 23696
+    },
+    {
+      "file_path": "data/raw/vllm-0.10.1/vllm/worker/worker_base.py",
+      "first_character_index": 21442,
+      "last_character_index": 23403
+    },
+    {
+      "file_path": "data/raw/vllm-0.10.1/vllm/worker/worker_base.py",
+      "first_character_index": 19980,
+      "last_character_index": 21432
+    },
+    {
+      "file_path": "data/raw/vllm-0.10.1/vllm/worker/worker_base.py",
+      "first_character_index": 18153,
+      "last_character_index": 19974
+    },
+    {
+      "file_path": "data/raw/vllm-0.10.1/vllm/worker/worker_base.py",
+      "first_character_index": 16751,
+      "last_character_index": 18150
+    },
+    {
+      "file_path": "data/raw/vllm-0.10.1/vllm/worker/worker_base.py",
+      "first_character_index": 14776,
+      "last_character_index": 16741
+    },
+    {
+      "file_path": "data/raw/vllm-0.10.1/vllm/worker/worker_base.py",
+      "first_character_index": 12880,
+      "last_character_index": 14766
+    },
+    {
+      "file_path": "data/raw/vllm-0.10.1/vllm/worker/worker_base.py",
+      "first_character_index": 10924,
+      "last_character_index": 12870
+    }
+  ],
+  "answer:what python packages need to be installed to use vllm with langchain?:10": "To use vLLM with LangChain, you need to install the following Python packages:\n\n- `langchain`\n- `langchain_community`\n- `langchain_milvus`\n- `langchain_openai`\n- `langchain_text_splitters`",
+  "answer:what causes the nccl error \"unhandled system error\" during ncclcomminitrank in vllm distributed serving?:10": "The NCCL error \"unhandled system error\" during `ncclCommInitRank` in vLLM distributed serving is caused by the NCCL library not being properly initialized or not supporting the environment in which the vLLM instance is running. This can occur if the NCCL library is not available, or if the environment does not support the required features for the distributed communication.",
+  "answer:how can you scale up vllm service to multiple replicas in skypilot?:10": "To scale up the vLLM service to multiple replicas in SkyPilot, you can use the `replicas` parameter in the `service` section of the YAML file. For example:\n\n```yaml\nservice:\n  replicas: 2\n```\n\nThis will distribute the service across two replicas, allowing the service to scale up as needed.",
+  "answer:which vllm features are not supported on tpu hardware?:5": "The features not supported on TPU hardware are:\n\n- **INT8 W8A8**\n- **FP8 W8A8**\n- **AWQ**\n- **FP4 W4A8** (as per the TPU documentation)"
+}

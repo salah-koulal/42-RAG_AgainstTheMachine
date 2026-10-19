@@ -27,6 +27,12 @@ def build_index(
     corpus_texts: List[str] = []
 
     print(f"Loaded {len(files)} files. Chunking...")
+    if not files:
+        print(
+            f"Error: No supported files (.py, .md, .txt) found in '{corpus_dir}'. "
+            "Indexing aborted."
+        )
+        return
 
     for file_path, content in tqdm(files, desc="Chunking files", unit="file"):
         full_path = str(Path(corpus_dir) / file_path)
@@ -44,6 +50,13 @@ def build_index(
             corpus_texts.append(indexed_text)
 
     print(f"Generated {len(all_chunks)} chunks. Building BM25 index...")
+    if not all_chunks:
+        print(
+            f"Error: No chunks generated from files in '{corpus_dir}'. "
+            "Indexing aborted."
+        )
+        return
+
     tokenized_corpus = [tokenize(text) for text in corpus_texts]
     bm25 = BM25Okapi(tokenized_corpus)
 
