@@ -4,14 +4,13 @@ import pickle
 from pathlib import Path
 from typing import List, Optional
 
-from rank_bm25 import BM25Okapi
+import bm25s
 from tqdm import tqdm
 
 from src.chunking.python_chunker import chunk_python
 from src.chunking.text_chunker import chunk_text
 from src.io_utils import PROCESSED_DIR, RAW_DIR, load_corpus
 from src.models import MinimalSource
-from src.retrieval.bm25_retriever import tokenize
 
 
 def build_index(
@@ -57,13 +56,13 @@ def build_index(
         )
         return
 
-    tokenized_corpus = [tokenize(text) for text in corpus_texts]
-    bm25 = BM25Okapi(tokenized_corpus)
+    tokenized_corpus = bm25s.tokenize(corpus_texts, show_progress=False)
+    bm25 = bm25s.BM25()
+    bm25.index(tokenized_corpus)
 
     PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
 
-    with open(PROCESSED_DIR / "bm25_index.pkl", "wb") as f:
-        pickle.dump(bm25, f)
+    bm25.save(str(PROCESSED_DIR / "bm25_index"))
 
     with open(PROCESSED_DIR / "chunks_metadata.pkl", "wb") as f:
         pickle.dump(all_chunks, f)
