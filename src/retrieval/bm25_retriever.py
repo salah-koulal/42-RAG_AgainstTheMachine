@@ -22,10 +22,9 @@ class BM25Retriever:
         """Take a user query, search BM25 index, and return top-k chunks."""
         if not query or not query.strip() or k <= 0:
             return []
-        query_tokens = bm25s.tokenize(query, show_progress=False)
+        query_tokens = bm25s.tokenize(query, show_progress=False, stopwords=[])
+        print(query_tokens.ids)
         actual_k = min(k, len(self.chunks_metadata))
-        if actual_k == 0:
-            return []
         results, _ = self.bm25.retrieve(query_tokens, k=actual_k, show_progress=False)
         indices = results[0].tolist()
         return [self.chunks_metadata[i] for i in indices]
