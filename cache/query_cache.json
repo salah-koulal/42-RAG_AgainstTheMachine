@@ -1,110 +1,32 @@
 {
-  "search:how to configure the openai server:3": [
+  "search:what activation formats does the fused batched moe layer return in vllm?:5": [
     {
-      "file_path": "data/raw/vllm-0.10.1/docs/deployment/frameworks/dstack.md",
-      "first_character_index": 1940,
-      "last_character_index": 3169
+      "file_path": "data/raw/vllm-0.10.1/vllm/model_executor/layers/quantization/gguf.py",
+      "first_character_index": 20015,
+      "last_character_index": 21195
     },
     {
-      "file_path": "data/raw/vllm-0.10.1/examples/online_serving/openai_chat_completion_client_with_tools_required.py",
+      "file_path": "data/raw/vllm-0.10.1/vllm/model_executor/layers/quantization/compressed_tensors/compressed_tensors_moe.py",
+      "first_character_index": 15480,
+      "last_character_index": 17405
+    },
+    {
+      "file_path": "data/raw/vllm-0.10.1/vllm/lora/models.py",
+      "first_character_index": 1888,
+      "last_character_index": 2337
+    },
+    {
+      "file_path": "data/raw/vllm-0.10.1/docs/design/fused_moe_modular_kernel.md",
       "first_character_index": 0,
-      "last_character_index": 565
+      "last_character_index": 1799
     },
     {
-      "file_path": "data/raw/vllm-0.10.1/examples/online_serving/openai_transcription_client.py",
-      "first_character_index": 0,
-      "last_character_index": 710
+      "file_path": "data/raw/vllm-0.10.1/tests/kernels/moe/modular_kernel_tools/cli_args.py",
+      "first_character_index": 1280,
+      "last_character_index": 2788
     }
   ],
-  "search:asdfghjkl zxcvbnm qwertyuiop:10": [
-    {
-      "file_path": "data/raw/vllm-0.10.1/vllm/worker/worker_base.py",
-      "first_character_index": 25167,
-      "last_character_index": 25995
-    },
-    {
-      "file_path": "data/raw/vllm-0.10.1/vllm/worker/worker_base.py",
-      "first_character_index": 23702,
-      "last_character_index": 25164
-    },
-    {
-      "file_path": "data/raw/vllm-0.10.1/vllm/worker/worker_base.py",
-      "first_character_index": 23424,
-      "last_character_index": 23696
-    },
-    {
-      "file_path": "data/raw/vllm-0.10.1/vllm/worker/worker_base.py",
-      "first_character_index": 21442,
-      "last_character_index": 23403
-    },
-    {
-      "file_path": "data/raw/vllm-0.10.1/vllm/worker/worker_base.py",
-      "first_character_index": 19980,
-      "last_character_index": 21432
-    },
-    {
-      "file_path": "data/raw/vllm-0.10.1/vllm/worker/worker_base.py",
-      "first_character_index": 18153,
-      "last_character_index": 19974
-    },
-    {
-      "file_path": "data/raw/vllm-0.10.1/vllm/worker/worker_base.py",
-      "first_character_index": 16751,
-      "last_character_index": 18150
-    },
-    {
-      "file_path": "data/raw/vllm-0.10.1/vllm/worker/worker_base.py",
-      "first_character_index": 14776,
-      "last_character_index": 16741
-    },
-    {
-      "file_path": "data/raw/vllm-0.10.1/vllm/worker/worker_base.py",
-      "first_character_index": 12880,
-      "last_character_index": 14766
-    },
-    {
-      "file_path": "data/raw/vllm-0.10.1/vllm/worker/worker_base.py",
-      "first_character_index": 10924,
-      "last_character_index": 12870
-    }
-  ],
-  "answer:what python packages need to be installed to use vllm with langchain?:10": "To use vLLM with LangChain, you need to install the following Python packages:\n\n- `langchain`\n- `langchain_community`\n- `langchain_milvus`\n- `langchain_openai`\n- `langchain_text_splitters`",
-  "answer:what causes the nccl error \"unhandled system error\" during ncclcomminitrank in vllm distributed serving?:10": "The NCCL error \"unhandled system error\" during `ncclCommInitRank` in vLLM distributed serving is caused by the NCCL library not being properly initialized or not supporting the environment in which the vLLM instance is running. This can occur if the NCCL library is not available, or if the environment does not support the required features for the distributed communication.",
-  "answer:how can you scale up vllm service to multiple replicas in skypilot?:10": "To scale up the vLLM service to multiple replicas in SkyPilot, you can use the `replicas` parameter in the `service` section of the YAML file. For example:\n\n```yaml\nservice:\n  replicas: 2\n```\n\nThis will distribute the service across two replicas, allowing the service to scale up as needed.",
-  "answer:which vllm features are not supported on tpu hardware?:5": "The features not supported on TPU hardware are:\n\n- **INT8 W8A8**\n- **FP8 W8A8**\n- **AWQ**\n- **FP4 W4A8** (as per the TPU documentation)",
-  "answer:how do you enable expert parallelism in vllm for moe models?:10": "To enable expert parallelism in vLLM for MoE models, you can set the `enable_expert_parallel` flag in the configuration. This flag will use expert parallelism instead of tensor parallelism for MoE layers.",
-  "answer:what does quantization trade off to reduce memory footprint in vllm?\":10": "Quantization in vLLM trades off model precision for smaller memory footprint, allowing large models to be run on a wider range of devices. The trade-off involves reducing the model's precision (e.g., from 16-bit to 4-bit or 8-bit) to save memory, but this also reduces inference performance.",
-  "answer:what causes the nccl error \"unhandled system error\" during ncclcomminitrank in vllm distributed serving?\":10": "The NCCL error \"unhandled system error\" during `ncclCommInitRank` in vLLM distributed serving is caused by the NCCL library not being properly initialized or not supporting the environment in which the vLLM instance is running. This can occur if the NCCL library is not available, or if the environment does not support the required features for the distributed communication.",
-  "search:how to tokenize text:5": [
-    {
-      "file_path": "data/raw/vllm-0.10.1/examples/offline_inference/vision_language_multi_image.py",
-      "first_character_index": 14388,
-      "last_character_index": 16195
-    },
-    {
-      "file_path": "data/raw/vllm-0.10.1/examples/offline_inference/vision_language_multi_image.py",
-      "first_character_index": 3501,
-      "last_character_index": 5394
-    },
-    {
-      "file_path": "data/raw/vllm-0.10.1/examples/offline_inference/vision_language_multi_image.py",
-      "first_character_index": 16198,
-      "last_character_index": 18122
-    },
-    {
-      "file_path": "data/raw/vllm-0.10.1/tests/entrypoints/test_chat_utils.py",
-      "first_character_index": 10590,
-      "last_character_index": 11596
-    },
-    {
-      "file_path": "data/raw/vllm-0.10.1/examples/offline_inference/vision_language_multi_image.py",
-      "first_character_index": 12469,
-      "last_character_index": 14385
-    }
-  ],
-  "answer:what is the cli command to start vllm serve?:10": "The CLI command to start vLLM serve is `vllm serve`.",
-  "answer:what api endpoint does vllm support for chat completions?:10": "The API endpoint for chat completions supported by vLLM is `/v1/chat/completions`.",
-  "search:how to configure openai server?:10": [
+  "search:how to configure the openai server?:3": [
     {
       "file_path": "data/raw/vllm-0.10.1/docs/deployment/frameworks/dstack.md",
       "first_character_index": 1940,
@@ -119,42 +41,6 @@
       "file_path": "data/raw/vllm-0.10.1/examples/online_serving/openai_chat_completion_client_with_tools_required.py",
       "first_character_index": 0,
       "last_character_index": 565
-    },
-    {
-      "file_path": "data/raw/vllm-0.10.1/examples/online_serving/openai_chat_completion_with_reasoning.py",
-      "first_character_index": 0,
-      "last_character_index": 1925
-    },
-    {
-      "file_path": "data/raw/vllm-0.10.1/examples/online_serving/prompt_embed_inference_with_openai_client.py",
-      "first_character_index": 0,
-      "last_character_index": 929
-    },
-    {
-      "file_path": "data/raw/vllm-0.10.1/tests/entrypoints/openai/test_chat_with_tool_reasoning.py",
-      "first_character_index": 348,
-      "last_character_index": 2229
-    },
-    {
-      "file_path": "data/raw/vllm-0.10.1/examples/online_serving/openai_chat_completion_tool_calls_with_reasoning.py",
-      "first_character_index": 0,
-      "last_character_index": 620
-    },
-    {
-      "file_path": "data/raw/vllm-0.10.1/examples/online_serving/openai_chat_completion_with_reasoning_streaming.py",
-      "first_character_index": 0,
-      "last_character_index": 1140
-    },
-    {
-      "file_path": "data/raw/vllm-0.10.1/docs/deployment/frameworks/litellm.md",
-      "first_character_index": 0,
-      "last_character_index": 1994
-    },
-    {
-      "file_path": "data/raw/vllm-0.10.1/benchmarks/auto_tune/README.md",
-      "first_character_index": 0,
-      "last_character_index": 1237
     }
-  ],
-  "answer:how to configure openai server?:10": "The provided codebase context includes several examples and documentation related to using vLLM with OpenAI-compatible clients for different tasks such as chat completion, audio transcription, and reasoning. The examples demonstrate how to:\n\n1. Use the OpenAI SDK to interact with the vLLM API server for chat completions.\n2. Transcribe audio using the OpenAI Whisper model.\n3. Generate chat completions using reasoning models.\n4. Stream chat completions from the model.\n5. Use LiteLLM to integrate with vLLM for chat and embedding tasks.\n\nThe context also mentions the use of the vLLM server and the need to start it with appropriate configurations. The examples show how to set up the OpenAI API key and base URL for the vLLM server."
+  ]
 }

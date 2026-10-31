@@ -28,12 +28,15 @@ class RagCLI:
         corpus_dir: str = str(RAW_DIR),
         max_chunk_size: int = 2000,
         chunk_size: Optional[int] = None,
+        incremental: bool = False,
     ) -> None:
         """Ingest data/raw/ and build the index under data/processed/."""
+
         corpus_path = Path(corpus_dir)
         if not corpus_path.exists():
             print(f"Error: Corpus directory not found at {corpus_dir}")
             return
+
         effective_chunk_size = chunk_size if chunk_size is not None else max_chunk_size
         if effective_chunk_size <= 0:
             print("Error: max_chunk_size must be positive.")
@@ -42,6 +45,7 @@ class RagCLI:
         build_index(
             corpus_dir=corpus_dir,
             max_chunk_size=effective_chunk_size,
+            incremental=incremental,
         )
 
     def search(self, query: str = "", k: int = 5) -> None:
