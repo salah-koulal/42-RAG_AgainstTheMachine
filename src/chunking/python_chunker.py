@@ -10,7 +10,7 @@ from src.models import MinimalSource
 def chunk_python(
     file_path: str, content: str, max_chunk_size: int = 2000
 ) -> List[MinimalSource]:
-    """Split a Python file into syntactic chunks using RecursiveCharacterTextSplitter."""
+    """chunks using Python-specific separator"""
     results: List[MinimalSource] = []
 
     splitter = RecursiveCharacterTextSplitter.from_language(
