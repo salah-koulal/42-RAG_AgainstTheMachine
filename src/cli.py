@@ -57,7 +57,7 @@ class RagCLI:
             print(f"Top {k} results: None (k must be positive).")
             return
         cached = get_cached("search", query, k)
-        if cached:
+        if cached is not None:
             print("[Cache HIT ⚡]")
             results = [MinimalSource(**s) for s in cached]
         else:
@@ -142,7 +142,7 @@ class RagCLI:
             return
 
         cached_ans = get_cached("answer", query, k)
-        if cached_ans:
+        if cached_ans is not None:
             print("[Cache HIT ⚡]")
             ans = cached_ans
         else:

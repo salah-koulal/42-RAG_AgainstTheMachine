@@ -1,0 +1,5 @@
+
+================ ANSWER ================
+The vLLM metric that tracks the number of requests currently being processed in model execution batches is `vllm:num_requests_running`.
+========================================
+

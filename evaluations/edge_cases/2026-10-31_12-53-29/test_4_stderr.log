@@ -1,0 +1,33 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/skoulal/Desktop/Common-Core/42-py_pro/42-RAG_AgainstTheMachine/src/__main__.py", line 2, in <module>
+    from src.cli import RagCLI
+  File "/home/skoulal/Desktop/Common-Core/42-py_pro/42-RAG_AgainstTheMachine/src/cli.py", line 9, in <module>
+    from src.generation.generator import QwenGenerator
+  File "/home/skoulal/Desktop/Common-Core/42-py_pro/42-RAG_AgainstTheMachine/src/generation/generator.py", line 5, in <module>
+    import torch
+  File "/home/skoulal/Desktop/Common-Core/42-py_pro/42-RAG_AgainstTheMachine/.venv/lib/python3.13/site-packages/torch/__init__.py", line 3312, in <module>
+    from torch import (
+    ...<4 lines>...
+    )
+  File "/home/skoulal/Desktop/Common-Core/42-py_pro/42-RAG_AgainstTheMachine/.venv/lib/python3.13/site-packages/torch/export/__init__.py", line 42, in <module>
+    from .decomp_utils import CustomDecompTable
+  File "/home/skoulal/Desktop/Common-Core/42-py_pro/42-RAG_AgainstTheMachine/.venv/lib/python3.13/site-packages/torch/export/decomp_utils.py", line 5, in <module>
+    from torch._export.utils import (
+    ...<4 lines>...
+    )
+  File "/home/skoulal/Desktop/Common-Core/42-py_pro/42-RAG_AgainstTheMachine/.venv/lib/python3.13/site-packages/torch/_export/__init__.py", line 49, in <module>
+    from .wrappers import _wrap_submodules
+  File "/home/skoulal/Desktop/Common-Core/42-py_pro/42-RAG_AgainstTheMachine/.venv/lib/python3.13/site-packages/torch/_export/wrappers.py", line 12, in <module>
+    from torch._higher_order_ops.flat_apply import (
+    ...<3 lines>...
+    )
+  File "/home/skoulal/Desktop/Common-Core/42-py_pro/42-RAG_AgainstTheMachine/.venv/lib/python3.13/site-packages/torch/_higher_order_ops/__init__.py", line 21, in <module>
+    from torch._higher_order_ops.flex_gemm import flex_gemm
+  File "/home/skoulal/Desktop/Common-Core/42-py_pro/42-RAG_AgainstTheMachine/.venv/lib/python3.13/site-packages/torch/_higher_order_ops/flex_gemm.py", line 10, in <module>
+    from torch._higher_order_ops.inline_asm_elementwise import inline_asm_elementwise
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1322, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 1256, in _find_spec
+KeyboardInterrupt
