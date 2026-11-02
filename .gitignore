@@ -44,8 +44,6 @@ data/output/search_results_and_answer/*
 
 # Generated outputs
 cache/
-evaluations/
-data/datasets/private/
 
 # Model weights downloaded from Hugging Face, if cached locally in-repo
 models/
