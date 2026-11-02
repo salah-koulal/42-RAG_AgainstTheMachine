@@ -42,6 +42,11 @@ data/output/search_results/*
 data/output/search_results_and_answer/*
 !data/output/search_results_and_answer/.gitkeep
 
+# Generated outputs
+cache/
+evaluations/
+data/datasets/private/
+
 # Model weights downloaded from Hugging Face, if cached locally in-repo
 models/
 *.bin
