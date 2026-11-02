@@ -1,2 +1,0 @@
-Chunking files:   0%|          | 0/1969 [00:00<?, ?file/s]Chunking files:  58%|█████▊    | 1151/1969 [00:00<00:00, 11496.69file/s]Chunking files: 100%|██████████| 1969/1969 [00:00<00:00, 5681.74file/s] 
-BM25S Count Tokens:   0%|          | 0/14353 [00:00<?, ?it/s]                                                             BM25S Compute Scores:   0%|          | 0/14353 [00:00<?, ?it/s]BM25S Compute Scores:  50%|█████     | 7234/14353 [00:00<00:00, 72332.65it/s]                                                                             

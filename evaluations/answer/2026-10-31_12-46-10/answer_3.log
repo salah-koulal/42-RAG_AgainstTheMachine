@@ -1,5 +1,0 @@
-
-================ ANSWER ================
-The CLI command used for benchmarking latency in vLLM is `vllm bench latency`.
-========================================
-

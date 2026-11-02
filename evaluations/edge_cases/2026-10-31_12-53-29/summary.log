@@ -1,4 +1,0 @@
-TEST_1 (Empty query): FAIL (traceback)
-TEST_2 (Gibberish query): PASS
-TEST_3 (k=0 answer): FAIL (traceback)
-TEST_4 (Nonexistent dataset path): FAIL (traceback)

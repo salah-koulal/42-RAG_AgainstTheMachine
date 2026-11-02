@@ -1,5 +1,0 @@
-
-================ ANSWER ================
-The API endpoint for chat completions supported by vLLM is `/v1/chat/completions`.
-========================================
-
