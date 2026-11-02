@@ -2,7 +2,7 @@
 
 from typing import List
 
-from langchain_text_splitters import Language, RecursiveCharacterTextSplitter
+from langchain_text_splitters import PythonCodeTextSplitter
 
 from src.models import MinimalSource
 
@@ -10,11 +10,10 @@ from src.models import MinimalSource
 def chunk_python(
     file_path: str, content: str, max_chunk_size: int = 2000
 ) -> List[MinimalSource]:
-    """chunks using Python-specific separator"""
+    """Split at Python-specific boundaries, subdividing oversized blocks."""
     results: List[MinimalSource] = []
 
-    splitter = RecursiveCharacterTextSplitter.from_language(
-        language=Language.PYTHON,
+    splitter = PythonCodeTextSplitter(
         chunk_size=max_chunk_size,
         chunk_overlap=0,
         add_start_index=True,
