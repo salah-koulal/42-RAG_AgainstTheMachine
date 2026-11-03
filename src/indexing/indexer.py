@@ -102,7 +102,6 @@ def build_index_incremental(
     bm25 = bm25s.BM25()
     bm25.index(tokenized_corpus)
 
-    # 5. Save all indices and caches
     PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
     bm25.save(str(PROCESSED_DIR / "bm25_index"))
 
