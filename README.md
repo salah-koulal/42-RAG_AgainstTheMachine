@@ -233,6 +233,7 @@ uv run python -m src evaluate \
 - **FastAPI Documentation**: [https://fastapi.tiangolo.com/](https://fastapi.tiangolo.com/)
 - **Pydantic Validation**: [https://docs.pydantic.dev/latest/](https://docs.pydantic.dev/latest/)
 - **Astral uv Package Manager**: [https://docs.astral.sh/uv/](https://docs.astral.sh/uv/)
+- **Chunking Strategies**: [https://medium.com/@anixlynch/7-chunking-strategies-for-langchain-b50dac194813] (https://medium.com/@anixlynch/7-chunking-strategies-for-langchain-b50dac194813)
 
 ### AI Usage Disclosure
 Generative AI was utilized during project development for understanding BM25 mathematical formulations, guiding FastAPI integration, refining edge case handling, and structuring documentation. All code was reviewed, validated, and tested for compliance with the 42 curriculum requirements.

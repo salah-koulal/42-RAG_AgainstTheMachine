@@ -4,24 +4,12 @@ import json
 from pathlib import Path
 from typing import Any, Dict, Optional
 
-from src.io_utils import PROCESSED_DIR
-
 CACHE_FILE = Path("cache/query_cache.json")
 
 
 def _get_key(mode: str, query: str, k: int) -> str:
     """Normalize mode, query, and k into a deterministic key."""
-    # Rebuilt indexes must not reuse results pointing at previous chunk ranges.
-    files = [PROCESSED_DIR / "bm25_index" / "params.index.json",
-             PROCESSED_DIR / "chunks_metadata.pkl"]
-    revision = []
-    for path in files:
-        try:
-            stat = path.stat()
-            revision.append(f"{stat.st_mtime_ns}:{stat.st_size}")
-        except OSError:
-            revision.append("missing")
-    return f"{'|'.join(revision)}:{mode}:{query.strip().lower()}:{k}"
+    return f"{mode}:{query.strip().lower()}:{k}"
 
 
 def get_cached(mode: str, query: str, k: int) -> Optional[Any]:
