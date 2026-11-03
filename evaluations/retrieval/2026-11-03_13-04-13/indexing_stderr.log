@@ -1,38 +1,0 @@
-Using CPython 3.13.13
-Creating virtual environment at: .venv
-Downloading pydantic-core (2.0MiB)
-Downloading sympy (6.0MiB)
-Downloading pygments (1.2MiB)
-Downloading transformers (11.5MiB)
-Downloading ast-serialize (1.2MiB)
-Downloading networkx (2.0MiB)
-Downloading scikit-learn (8.7MiB)
-Downloading zstandard (5.3MiB)
-Downloading uvloop (4.3MiB)
-Downloading mypy (14.5MiB)
-Downloading numpy (15.9MiB)
-Downloading hf-xet (4.3MiB)
-Downloading tokenizers (3.2MiB)
-Downloading scipy (33.7MiB)
-Downloading torch (187.2MiB)
- Downloaded pygments
- Downloaded ast-serialize
- Downloaded pydantic-core
- Downloaded networkx
- Downloaded tokenizers
- Downloaded torch
- Downloaded uvloop
- Downloaded hf-xet
- Downloaded zstandard
- Downloaded sympy
- Downloaded scikit-learn
- Downloaded transformers
- Downloaded mypy
- Downloaded numpy
- Downloaded scipy
-warning: Failed to hardlink files; falling back to full copy. This may lead to degraded performance.
-         If the cache and target directories are on different filesystems, hardlinking may not be supported.
-         If this is intentional, set `export UV_LINK_MODE=copy` or use `--link-mode=copy` to suppress this warning.
-Installed 87 packages in 6.37s
-Chunking files:   0%|          | 0/1967 [00:00<?, ?file/s]Chunking files:  51%|█████     | 1003/1967 [00:00<00:00, 5682.26file/s]Chunking files:  87%|████████▋ | 1704/1967 [00:00<00:00, 6272.17file/s]Chunking files: 100%|██████████| 1967/1967 [00:00<00:00, 6280.00file/s]
-BM25S Count Tokens:   0%|          | 0/14313 [00:00<?, ?it/s]                                                             BM25S Compute Scores:   0%|          | 0/14313 [00:00<?, ?it/s]BM25S Compute Scores:  63%|██████▎   | 8955/14313 [00:00<00:00, 89542.61it/s]                                                                             
