@@ -1,0 +1,4 @@
+Loaded 1969 files. Chunking...
+Chunking files:   0%|          | 0/1969 [00:00<?, ?file/s]Chunking files:  10%|▉         | 192/1969 [00:00<00:01, 1308.84file/s]Chunking files:  60%|█████▉    | 1175/1969 [00:00<00:00, 5511.76file/s]Chunking files:  92%|█████████▏| 1807/1969 [00:00<00:00, 5162.35file/s]Chunking files: 100%|██████████| 1969/1969 [00:00<00:00, 4824.02file/s]
+Generated 14353 chunks. Building BM25 index...
+BM25S Count Tokens:   0%|          | 0/14353 [00:00<?, ?it/s]                                                             BM25S Compute Scores:   0%|          | 0/14353 [00:00<?, ?it/s]BM25S Compute Scores:  45%|████▌     | 6523/14353 [00:00<00:00, 65212.96it/s]BM25S Compute Scores:  94%|█████████▍| 13469/14353 [00:00<00:00, 67705.01it/s]                                                                              Ingestion complete! Indices saved under data/processed/
